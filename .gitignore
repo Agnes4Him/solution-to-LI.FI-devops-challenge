@@ -2,6 +2,6 @@ apis/bird/getBird
 
 apis/birdImage/getBirdImage
 
-infrstructures/vars
+infrastructures/vars
 
 infrastructures/.terraform
