@@ -1,6 +1,6 @@
 FROM golang:1.23-alpine
 
-ENV APP_HOME /go/src/bird
+ENV APP_HOME=/go/src/bird
 
 RUN mkdir -p "$APP_HOME"
 
