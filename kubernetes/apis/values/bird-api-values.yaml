@@ -1,3 +1,4 @@
+apisNamespace: apis
 replicaCount: 2
 image:
   repository: agnes4im/bird-api
