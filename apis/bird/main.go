@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"os"
 	"io"
 	"math/rand/v2"
 	"net/http"
@@ -25,8 +26,8 @@ func defaultBird(err error) Bird {
 }
 
 func getBirdImage(birdName string) (string, error) {
-    //res, err := http.Get(fmt.Sprintf("http://localhost:4200?birdName=%s", url.QueryEscape(birdName)))
-	res, err := http.Get(fmt.Sprintf("http://birdimage-api:4200?birdName=%s", url.QueryEscape(birdName)))
+	api := os.Getenv("BIRDIMAGE_API")
+	res, err := http.Get(fmt.Sprintf("%s?birdName=%s", api, url.QueryEscape(birdName)))
     if err != nil {
         return "", err
     }
