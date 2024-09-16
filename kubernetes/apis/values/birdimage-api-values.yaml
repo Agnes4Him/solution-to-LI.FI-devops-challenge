@@ -3,9 +3,9 @@ replicaCount: 2
 image:
   repository: agnes4im/birdimage-api
   pullPolicy: IfNotPresent
-  tag: "1.0.0"
+  tag: "1.0"
 service:
-  type: LoadBalancer
+  type: ClusterIP
   port: 4200
 #resources:
   # limits:

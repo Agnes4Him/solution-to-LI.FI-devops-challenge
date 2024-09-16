@@ -1,58 +1,58 @@
-resource "aws_vpc" "demo_vpc" {
+resource "aws_vpc" "task_vpc" {
   cidr_block = var.vpc_cidr
 
   tags = {
-    Name = var.vpc_tag
+    Name = "${var.env}-vpc"
   }
 }
 
 resource "aws_internet_gateway" "igw" {
-  vpc_id = aws_vpc.demo_vpc.id
+  vpc_id = aws_vpc.task_vpc.id
 
   tags = {
-    Name = var.igw_tag
+    Name = "${var.env}-igw"
   }
 }
 
 resource "aws_subnet" "private_subnetA" {
-  vpc_id            = aws_vpc.demo_vpc.id
+  vpc_id            = aws_vpc.task_vpc.id
   cidr_block        = "10.0.1.0/24"
   availability_zone = "us-east-1a"
 
   tags = {
-    "Name" = "private-${var.subnet_tag}-a"
+    "Name" = "${var.env}-private-subnetA"
   }
 }
 
 resource "aws_subnet" "private_subnetB" {
-  vpc_id            = aws_vpc.demo_vpc.id
+  vpc_id            = aws_vpc.task_vpc.id
   cidr_block        = "10.0.2.0/24"
   availability_zone = "us-east-1b"
 
   tags = {
-    "Name" = "private-${var.subnet_tag}-b"
+    "Name" = "${var.env}-private-subnetB"
   }
 }
 
 resource "aws_subnet" "public_subnetA" {
-  vpc_id                  = aws_vpc.demo_vpc.id
+  vpc_id                  = aws_vpc.task_vpc.id
   cidr_block              = "10.0.3.0/24"
   availability_zone       = "us-east-1a"
   map_public_ip_on_launch = true
 
   tags = {
-    "Name" = "public-${var.subnet_tag}-a"
+    "Name" = "${var.env}-public-subnetA"
   }
 }
 
 resource "aws_subnet" "public_subnetB" {
-  vpc_id                  = aws_vpc.demo_vpc.id
+  vpc_id                  = aws_vpc.task_vpc.id
   cidr_block              = "10.0.4.0/24"
   availability_zone       = "us-east-1b"
   map_public_ip_on_launch = true
 
   tags = {
-    "Name" = "public-${var.subnet_tag}-b"
+    "Name" = "${var.env}-public-subnetB"
   }
 }
 
@@ -60,7 +60,7 @@ resource "aws_eip" "nat" {
   domain = "vpc"
 
   tags = {
-    Name = var.eip_tag
+    Name = "${var.env}-eip"
   }
 }
 
@@ -69,14 +69,14 @@ resource "aws_nat_gateway" "nat_gw" {
   subnet_id     = aws_subnet.public_subnetA.id
 
   tags = {
-    Name = var.nat_tag
+    Name = "${var.env}-nat"
   }
 
   depends_on = [aws_internet_gateway.igw]
 }
 
 resource "aws_route_table" "private_RT" {
-  vpc_id = aws_vpc.demo_vpc.id
+  vpc_id = aws_vpc.task_vpc.id
 
   route {
     cidr_block     = "0.0.0.0/0"
@@ -84,12 +84,12 @@ resource "aws_route_table" "private_RT" {
   }
 
   tags = {
-    Name = "private-${var.rt_tag}"
+    Name = "${var.env}-private-RT"
   }
 }
 
 resource "aws_route_table" "public_RT" {
-  vpc_id = aws_vpc.demo_vpc.id
+  vpc_id = aws_vpc.task_vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -97,7 +97,7 @@ resource "aws_route_table" "public_RT" {
   }
 
   tags = {
-    Name = "public-${var.rt_tag}"
+    Name = "${var.env}-public-RT"
   }
 }
 
@@ -123,8 +123,33 @@ resource "aws_route_table_association" "public_RT_associationB" {
 
 resource "aws_security_group" "instance_sg" {
   name        = "instance_sg"
-  description = "Allow HTTP/HTTPS traffic to web server"
-  vpc_id      = aws_vpc.demo_vpc.id
+  description = "Allow traffic from and to Application LoadBalancer"
+  vpc_id      = aws_vpc.task_vpc.id
+
+  ingress {
+    description = "Ingress from LoadBalancer"
+    from_port   = 4201
+    to_port     = 4201
+    protocol    = "tcp"
+    cidr_blocks = [aws_security_group.lb_sg.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = [aws_security_group.lb_sg.id]
+  }
+
+  tags = {
+    Name = "${var.env}-instance-sg"
+  }
+}
+
+resource "aws_security_group" "lb_sg" {
+  name        = "loadbalancer_sg"
+  description = "Allow HTTP/HTTPS traffic from the internet to Application Loadbalancer"
+  vpc_id      = aws_vpc.task_vpc.id
 
   ingress {
     description = "HTTPS ingress"
@@ -148,18 +173,8 @@ resource "aws_security_group" "instance_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-}
 
-resource "aws_security_group" "db_sg" {
-  name        = "database_sg"
-  description = "Allow traffic from web server"
-  vpc_id      = aws_vpc.demo_vpc.id
-
-  ingress {
-    description = "ingress from web service"
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
-    cidr_blocks = [aws_security_group.instance_sg.id]
+  tags = {
+    Name = "${var.env}-lb-sg"
   }
 }

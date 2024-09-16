@@ -1,11 +1,6 @@
-variable "ami_id" {
+variable "env" {
   type    = string
-  default = ""
-}
-
-variable "instance_subnet" {
-  type    = string
-  default = ""
+  default = "task"
 }
 
 variable "instance_type" {
@@ -18,11 +13,41 @@ variable "key_pair_name" {
   default = ""
 }
 
+variable "vpc_id" {
+  type    = string
+  default = ""
+}
+
 variable "instance_sg" {
   type    = string
   default = ""
 }
 
-variable "instance_subnets" {
-  type = map(string)
+variable "lb_sg" {
+  type    = string
+  default = ""
 }
+
+variable "private_subnetA" {
+  type    = string
+  default = ""
+}
+
+variable "private_subnetB" {
+  type    = string
+  default = ""
+}
+
+variable "public_subnetA" {
+  type    = string
+  default = ""
+}
+
+variable "public_subnetB" {
+  type    = string
+  default = ""
+}
+
+/*variable "instance_subnets" {
+  type = map(string)
+}*/

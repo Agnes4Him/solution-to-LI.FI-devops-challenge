@@ -6,12 +6,12 @@ terraform {
       version = "~> 5.0"
     }
   }
-  backend "s3" {
+  /*backend "s3" {
     bucket = "devops-task-bucket"
     key    = "task-tf-state"
     region = "us-east-1"
     dynamodb_table = "task-tf-remote-state-lock"
-  }
+  }*/
 }
 
 provider "aws" {
@@ -19,22 +19,22 @@ provider "aws" {
 }
 
 module "network" {
-  source = "./modules.tf/vpc"
+  source = "./modules/network"
 
-  vpc_cidr   = var.vpc_cidr
-  vpc_tag    = var.vpc_tag
-  igw_tag    = var.igw_tag
-  subnet_tag = var.subnet_tag
-  nat_tag    = var.nat_tag
-  rt_tag     = var.rt_tag
+  vpc_cidr = var.vpc_cidr
+  env      = var.env
 }
 
-module "instance" {
-  source = "./modules.tf/instance"
+module "instances" {
+  source = "./modules/instances"
 
-  instance_sg      = module.vpc.instance_sg
-  ami_id           = var.ami_id
-  instance_type    = var.instance_type
-  instance_subnets = var.instance_subnets
-  key_pair_name    = var.key_pair_name
+  vpc_id          = module.network.vpc_id
+  instance_sg     = module.network.instance_sg
+  lb_sg           = module.network.lb_sg
+  instance_type   = var.instance_type
+  private_subnetA = module.network.private_subnetA
+  private_subnetB = module.network.private_subnetB
+  public_subnetA  = module.network.public_subnetA
+  public_subnetB  = module.network.public_subnetB
+  key_pair_name   = var.key_pair_name
 }
