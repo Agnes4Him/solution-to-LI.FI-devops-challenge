@@ -1,7 +1,0 @@
-dashboard:
-  enabled: true
-kubernetes:
-  namespaces:
-    - default
-    - kube-system
-    - apis
