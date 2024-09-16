@@ -1,6 +1,6 @@
 variable "env" {
   type    = string
-  default = "task"
+  default = ""
 }
 
 variable "instance_type" {
@@ -48,6 +48,14 @@ variable "public_subnetB" {
   default = ""
 }
 
-/*variable "instance_subnets" {
-  type = map(string)
-}*/
+variable "bucket_prefix" {
+  type    = string
+  default = ""
+}
+
+variable "logs_bucket" {
+  type    = string
+  default = ""
+}
+
+

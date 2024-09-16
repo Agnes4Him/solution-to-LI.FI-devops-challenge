@@ -71,6 +71,11 @@ resource "aws_lb"  "task_LB" {                                   # Application L
   load_balancer_type = "application"
   security_groups = [var.lb_sg]
   subnets = [var.public_subnetA, var.public_subnetB]
+  access_logs {                                                   # S3 bucket for Load Balancer to write access logs to
+    bucket  = var.logs_bucket
+    prefix  = var.bucket_prefix
+    enabled = true
+  }
 }
 
 resource "aws_lb_listener"  "task_alb_listener" {                 # Application LoadBalancer listeners

@@ -38,11 +38,6 @@ variable "az-b" {
   default = "us-east-1b"
 }
 
-variable "instance_subnet" {
-  type    = string
-  default = ""
-}
-
 variable "instance_type" {
   type    = string
   default = "t2.small"
@@ -52,3 +47,14 @@ variable "key_pair_name" {
   type    = string
   default = "task_key"
 }
+
+variable "bucket_prefix" {
+  type    = string
+  default = "task/access-logs"
+}
+
+variable "logs_bucket" {
+  type    = string
+  default = "task-elb-access-log-bucket"
+}
+

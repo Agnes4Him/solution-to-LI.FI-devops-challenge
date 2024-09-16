@@ -42,5 +42,13 @@ module "instances" {
   private_subnetB = module.network.private_subnetB
   public_subnetA  = module.network.public_subnetA
   public_subnetB  = module.network.public_subnetB
+  bucket_prefix   = var.bucket_prefix
+  logs_bucket     = module.s3.logs_bucket
   key_pair_name   = var.key_pair_name
+}
+
+module "s3" {
+  source = "./modules/s3"
+
+  logs_bucket = var.logs_bucket
 }

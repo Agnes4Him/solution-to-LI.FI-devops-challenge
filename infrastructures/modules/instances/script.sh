@@ -31,13 +31,13 @@ rm -rf linux-amd64
 sudo apt install git-all
 
 #clone k8s helm git repo
-git clone ...
+git clone https://github.com/Agnes4Him/kubernetes-helm.git
 
 #start minikube
 minikube start
 
 #run helm install to deploy bird-api and birdimage-api
-cd kubernetes
+cd kubernetes-helm
 
 helm install -f apis/values/birdimage-api-values.yaml birdimage-api apis
 
