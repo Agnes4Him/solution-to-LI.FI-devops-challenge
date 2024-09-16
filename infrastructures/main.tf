@@ -21,8 +21,14 @@ provider "aws" {
 module "network" {
   source = "./modules/network"
 
-  vpc_cidr = var.vpc_cidr
-  env      = var.env
+  vpc_cidr             = var.vpc_cidr
+  private_subnetA_cidr = var.private_subnetA_cidr
+  private_subnetB_cidr = var.private_subnetB_cidr
+  public_subnetA_cidr  = var.public_subnetA_cidr
+  public_subnetB_cidr  = var.public_subnetB_cidr
+  az-a                 = var.az-a
+  az-b                 = var.az-b
+  env                  = var.env
 }
 
 module "instances" {

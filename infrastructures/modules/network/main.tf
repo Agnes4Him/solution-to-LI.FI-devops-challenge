@@ -16,8 +16,8 @@ resource "aws_internet_gateway" "igw" {
 
 resource "aws_subnet" "private_subnetA" {
   vpc_id            = aws_vpc.task_vpc.id
-  cidr_block        = "10.0.1.0/24"
-  availability_zone = "us-east-1a"
+  cidr_block              = var.private_subnetA_cidr
+  availability_zone = var.az-a
 
   tags = {
     "Name" = "${var.env}-private-subnetA"
@@ -26,8 +26,8 @@ resource "aws_subnet" "private_subnetA" {
 
 resource "aws_subnet" "private_subnetB" {
   vpc_id            = aws_vpc.task_vpc.id
-  cidr_block        = "10.0.2.0/24"
-  availability_zone = "us-east-1b"
+  cidr_block        = var.private_subnetB_cidr
+  availability_zone = var.az-b
 
   tags = {
     "Name" = "${var.env}-private-subnetB"
@@ -36,9 +36,8 @@ resource "aws_subnet" "private_subnetB" {
 
 resource "aws_subnet" "public_subnetA" {
   vpc_id                  = aws_vpc.task_vpc.id
-  cidr_block              = "10.0.3.0/24"
-  availability_zone       = "us-east-1a"
-  map_public_ip_on_launch = true
+  cidr_block              = var.public_subnetA_cidr
+  availability_zone       = var.az-a
 
   tags = {
     "Name" = "${var.env}-public-subnetA"
@@ -47,9 +46,8 @@ resource "aws_subnet" "public_subnetA" {
 
 resource "aws_subnet" "public_subnetB" {
   vpc_id                  = aws_vpc.task_vpc.id
-  cidr_block              = "10.0.4.0/24"
-  availability_zone       = "us-east-1b"
-  map_public_ip_on_launch = true
+  cidr_block              = var.public_subnetB_cidr
+  availability_zone       = var.az-b
 
   tags = {
     "Name" = "${var.env}-public-subnetB"

@@ -8,6 +8,36 @@ variable "env" {
   default = "task"
 }
 
+variable "private_subnetA_cidr" {
+  type    = string
+  default = "10.0.1.0/24"
+}
+
+variable "private_subnetB_cidr" {
+  type    = string
+  default = "10.0.2.0/24"
+}
+
+variable "public_subnetA_cidr" {
+  type    = string
+  default = "10.0.3.0/24"
+}
+
+variable "public_subnetB_cidr" {
+  type    = string
+  default = "10.0.4.0/24"
+}
+
+variable "az-a" {
+  type    = string
+  default = "us-east-1a"
+}
+
+variable "az-b" {
+  type    = string
+  default = "us-east-1b"
+}
+
 variable "instance_subnet" {
   type    = string
   default = ""
@@ -22,11 +52,3 @@ variable "key_pair_name" {
   type    = string
   default = "task_key"
 }
-
-/*variable "instance_subnets" {
-  type = map(string)
-  default = {
-    "a" = "10.0.3.0/24",
-    "b" = "10.0.4.0/24"
-  }
-}*/

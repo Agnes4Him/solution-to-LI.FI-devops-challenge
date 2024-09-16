@@ -1,20 +1,4 @@
-/*resource "aws_instance" "demo_instance" {
-  ami           = var.ami_id
-  for_each      = var.instance_subnets
-  subnet_id     = each.value
-  instance_type = var.instance_type
-  vpc_security_group_ids = [
-    var.instance_sg
-  ]
-  key_name                    = var.key_pair_name
-  associate_public_ip_address = true
-
-  tags = {
-    Name = "instance-${each.key}"
-  }
-}*/
-
-data "aws_ami" "task_ubuntu_ami" {
+data "aws_ami" "task_ubuntu_ami" {           # Fetch AMI for launch template
   most_recent = true
   owners = ["099720109477"]
  
@@ -35,7 +19,7 @@ data "aws_ami" "task_ubuntu_ami" {
 }
 
 
-resource "aws_launch_template" "task_LT" {
+resource "aws_launch_template" "task_LT" {        # Launch template for instances
   name_prefix     = "task"
   image_id        = data.aws_ami.task_ubuntu_ami.id
   instance_type   = var.instance_type
@@ -53,7 +37,7 @@ resource "aws_launch_template" "task_LT" {
   user_data = filebase64("${path.module}/script.sh")
 }
 
-resource "aws_lb_target_group"  "task_target_group" {
+resource "aws_lb_target_group"  "task_target_group" {            # Define target group for ALB to route traffic to
   name = "task-target-group"
   port = 4201
   protocol = "HTTP"
@@ -65,7 +49,7 @@ resource "aws_lb_target_group"  "task_target_group" {
   }
 }
 
-resource "aws_autoscaling_group" "task_ASG" {
+resource "aws_autoscaling_group" "task_ASG" {                      # Autoscaling group for scaling in and out the instances
   name                  = "task-autoscaling-group"  
   desired_capacity      = 1
   max_size              = 3
@@ -81,7 +65,7 @@ resource "aws_autoscaling_group" "task_ASG" {
   }
 }
 
-resource "aws_lb"  "task_LB" {
+resource "aws_lb"  "task_LB" {                                   # Application LoadBalancer to route traffic to the instances
   name = "task-loadbalancer"
   internal = false
   load_balancer_type = "application"
@@ -89,7 +73,7 @@ resource "aws_lb"  "task_LB" {
   subnets = [var.public_subnetA, var.public_subnetB]
 }
 
-resource "aws_lb_listener"  "task_alb_listener" {
+resource "aws_lb_listener"  "task_alb_listener" {                 # Application LoadBalancer listeners
   load_balancer_arn = aws_lb.task_LB.arn
   port = "80"
   protocol = "HTTP"
@@ -100,7 +84,7 @@ resource "aws_lb_listener"  "task_alb_listener" {
   }
 }
 
-resource "aws_autoscaling_policy" "scale_down_policy" {
+resource "aws_autoscaling_policy" "scale_down_policy" {            # Policy to define criteria for scaling down instance count
   name                   = "scale-down"
   autoscaling_group_name = aws_autoscaling_group.task_ASG.name
   adjustment_type        = "ChangeInCapacity"
@@ -108,7 +92,7 @@ resource "aws_autoscaling_policy" "scale_down_policy" {
   cooldown               = 120
 }
 
-resource "aws_autoscaling_policy" "scale_up_policy" {
+resource "aws_autoscaling_policy" "scale_up_policy" {               # Policy to define criteria for scaling up instance count
   name                   = "scale-up"
   autoscaling_group_name = aws_autoscaling_group.task_ASG.name
   adjustment_type        = "ChangeInCapacity"
@@ -117,7 +101,7 @@ resource "aws_autoscaling_policy" "scale_up_policy" {
 }
 
 
-resource "aws_cloudwatch_metric_alarm" "scale_down_alarm" {
+resource "aws_cloudwatch_metric_alarm" "scale_down_alarm" {          # Cloud watch alarm to trigger scaling down
   alarm_description   = "Monitors Instances CPU utilization"
   alarm_actions       = [aws_autoscaling_policy.scale_down_policy.arn]
   alarm_name          = "scale_down_alarm"
@@ -134,7 +118,7 @@ resource "aws_cloudwatch_metric_alarm" "scale_down_alarm" {
   }
 }
 
-resource "aws_cloudwatch_metric_alarm" "scale_up_alarm" {
+resource "aws_cloudwatch_metric_alarm" "scale_up_alarm" {              # Cloud watch alarm to trigger scaling up
   alarm_description   = "Monitors Instances CPU utilization"
   alarm_actions       = [aws_autoscaling_policy.scale_up_policy.arn]
   alarm_name          = "scale_up_alarm"

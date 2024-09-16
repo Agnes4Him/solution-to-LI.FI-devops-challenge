@@ -1,7 +1,3 @@
-output "instance_ip" {
-  value = values(module.instances)[*].public_ip
-}
-
-output "instance_dns" {
-  value = values(module.instances)[*].public_dns
+output "lb_dns" {
+  value = module.instances.lb_dns
 }
