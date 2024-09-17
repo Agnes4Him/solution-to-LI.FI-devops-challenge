@@ -71,7 +71,7 @@ resource "aws_lb"  "task_LB" {                                   # Application L
   load_balancer_type = "application"
   security_groups = [var.lb_sg]
   subnets = [var.public_subnetA, var.public_subnetB]
-  access_logs {                                                   # S3 bucket for Load Balancer to write access logs to
+  access_logs {                                                   # S3 bucket for Load Balancer to write access logs to. Add this block if you wish to send logs to S3 for monitoring
     bucket  = var.logs_bucket
     prefix  = var.bucket_prefix
     enabled = true

@@ -47,7 +47,7 @@ module "instances" {
   key_pair_name   = var.key_pair_name
 }
 
-module "s3" {
+module "s3" {                              # This module should be added if access_logs is enabled on the application load balancer
   source = "./modules/s3"
 
   logs_bucket = var.logs_bucket
