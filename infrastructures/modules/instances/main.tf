@@ -23,8 +23,10 @@ resource "aws_launch_template" "task_LT" {        # Launch template for instance
   name_prefix     = "task"
   image_id        = data.aws_ami.task_ubuntu_ami.id
   instance_type   = var.instance_type
+  key_name = var.key_name
   network_interfaces {
-    device_index = 0
+    #device_index = 0
+    associate_public_ip_address = true
     security_groups = [var.instance_sg]
   }
 

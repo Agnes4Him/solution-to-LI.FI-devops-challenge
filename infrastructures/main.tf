@@ -6,12 +6,12 @@ terraform {
       version = "~> 5.0"
     }
   }
-  /*backend "s3" {
-    bucket = "devops-task-bucket"
-    key    = "task-tf-state"
+  backend "s3" {
+    bucket = "devops-interview-task-bucket"
+    key    = "terraform.tfstate"
     region = "us-east-1"
     dynamodb_table = "task-tf-remote-state-lock"
-  }*/
+  }
 }
 
 provider "aws" {
@@ -44,7 +44,7 @@ module "instances" {
   public_subnetB  = module.network.public_subnetB
   bucket_prefix   = var.bucket_prefix
   logs_bucket     = module.s3.logs_bucket
-  key_pair_name   = var.key_pair_name
+  key_name   = var.key_name
 }
 
 module "s3" {                              # This module should be added if access_logs is enabled on the application load balancer

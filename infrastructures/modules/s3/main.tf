@@ -1,17 +1,11 @@
 resource "aws_s3_bucket" "task_logs_bucket" {                       # S3 bucket for storing access logs sent from Application Load Balancer
   bucket        = var.logs_bucket
-  #acl           = "log-delivery-write"
   force_destroy = true
 
   tags = {
     Name = "${var.env}-bucket"
   }
 
-}
-
-resource "aws_s3_bucket_acl" "logs_bucket_acl" {
-  bucket = aws_s3_bucket.task_logs_bucket.id
-  acl    = "log-delivery-write"
 }
 
 data "aws_elb_service_account" "main" {}

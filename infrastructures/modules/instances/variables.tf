@@ -8,7 +8,7 @@ variable "instance_type" {
   default = ""
 }
 
-variable "key_pair_name" {
+variable "key_name" {
   type    = string
   default = ""
 }
