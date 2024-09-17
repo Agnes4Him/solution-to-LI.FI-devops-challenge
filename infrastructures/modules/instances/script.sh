@@ -7,7 +7,7 @@ sudo apt update
 sudo apt install -y docker.io
 
 #add current user to docker group
-sudo usermod -aG docker $USER && newgrp docker
+sudo usermod -aG docker ubuntu && newgrp docker
 
 #install minikube
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64

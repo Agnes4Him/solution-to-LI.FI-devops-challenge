@@ -25,8 +25,8 @@ resource "aws_launch_template" "task_LT" {        # Launch template for instance
   instance_type   = var.instance_type
   key_name = var.key_name
   network_interfaces {
-    #device_index = 0
-    associate_public_ip_address = true
+    device_index = 0
+    #associate_public_ip_address = true
     security_groups = [var.instance_sg]
   }
 
