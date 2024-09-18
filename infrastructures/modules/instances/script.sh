@@ -14,6 +14,8 @@ curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-
 
 sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
 
+sudo install conntrack
+
 #install Helm
 wget https://get.helm.sh/helm-v3.9.3-linux-amd64.tar.gz
 
@@ -35,7 +37,7 @@ sudo apt install -y git
 sudo -i
 
 #start minikube
-minikube start
+minikube start --driver=docker
 
 #clone k8s helm git repo
 #sudo git clone https://github.com/Agnes4Him/kubernetes-helm.git
