@@ -1,3 +1,5 @@
+## A documentation of the steps and results obtained from executing the tasks in the README.md file in this project
+
 This task was approached using the following steps:
 
 1. The original GitHub repository was forked into my GitHub account - public
