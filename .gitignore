@@ -5,3 +5,5 @@ apis/birdImage/getBirdImage
 infrastructures/vars
 
 infrastructures/.terraform
+
+images2

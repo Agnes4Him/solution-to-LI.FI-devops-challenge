@@ -23,7 +23,7 @@ resource "aws_launch_template" "task_LT" {        # Launch template for instance
   name_prefix     = "task"
   image_id        = data.aws_ami.task_ubuntu_ami.id
   instance_type   = var.instance_type
-  key_name = var.key_name
+  #key_name = var.key_name
   network_interfaces {
     device_index = 0
     #associate_public_ip_address = true
@@ -41,19 +41,24 @@ resource "aws_launch_template" "task_LT" {        # Launch template for instance
 
 resource "aws_lb_target_group"  "task_target_group" {            # Define target group for ALB to route traffic to
   name = "task-target-group"
-  port = 4201
+  target_type = "instance"
+  port = 80
   protocol = "HTTP"
   vpc_id = var.vpc_id
 
   health_check {
+    healthy_threshold = 2
+    unhealthy_threshold = 3
+    interval = 60
+    timeout = 120
     path = "/"
-    matcher = 200
+    port = 80
   }
 }
 
 resource "aws_autoscaling_group" "task_ASG" {                      # Autoscaling group for scaling in and out the instances
   name                  = "task-autoscaling-group"  
-  desired_capacity      = 1
+  desired_capacity      = 2
   max_size              = 3
   min_size              = 1
   health_check_type     = "EC2"
