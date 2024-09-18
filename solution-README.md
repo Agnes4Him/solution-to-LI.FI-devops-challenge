@@ -10,7 +10,7 @@ This task was approached using the following steps:
 make
 ```
 
-3. The APIs were ran by running the binary file for each:
+3. The APIs were ran by running the binary file for each. This showed the relationship between the 2 APIs:
 
 ```bash
 ./getBird
@@ -19,3 +19,23 @@ make
 ```bash
 ./getBirdImage
 ```
+
+4. Dockerfile was created for each API.
+
+5. With the Dockerfile, the docker image of each API was built and push to Docker registry using the proceeding commands:
+
+```bash
+docker build -t <docker-registry-username>/bird-api:1.0 .
+
+docker build -t <docker-registry-username>/birdimage-api:1.0 .
+```
+
+```bash
+docker login
+```
+
+```bash
+docker push <docker-registry-username>/birdimage-api:1.0
+
+docker push <docker-registry-username>/birdimage-api:1.0
+``` 
