@@ -1,54 +1,36 @@
 #!/bin/bash
 
-#update package
-sudo yum update -y && sudo yum upgrade -y
+apt update -y && apt upgrade -y
 
-#install docker
-sudo yum install -y docker
-#sudo amazon-linux-extras install docker
+apt install -y docker.io
 
-#add current user to docker group
-sudo usermod -aG docker ec2-user && newgrp docker
+usermod -aG docker ubuntu && newgrp docker
 
-#start docker service
-sudo systemctl start docker && sudo systemctl enable docker
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 
-#install minikube
-curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-latest.x86_64.rpm
+install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
 
-sudo rpm -Uvh minikube-latest.x86_64.rpm
+install conntrack
 
-#install Helm
 wget https://get.helm.sh/helm-v3.9.3-linux-amd64.tar.gz
 
 tar xvf helm-v3.9.3-linux-amd64.tar.gz
 
-sudo mv linux-amd64/helm /usr/local/bin
+mv linux-amd64/helm /usr/local/bin
 
 rm helm-v3.9.3-linux-amd64.tar.gz
 
 rm -rf linux-amd64
 
-#install kubectl
-curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.30.0/bin/linux/amd64/kubectl
+snap install kubectl --classic
 
-sudo chmod +x ./kubectl
+apt install -y git
 
-sudo mv ./kubectl /usr/local/bin/kubectl
-
-#install git
-sudo yum install -y git
-
-#start minikube
 minikube start
 
-#clone k8s helm git repo
-#sudo git clone https://github.com/Agnes4Him/kubernetes-helm.git
+git clone https://github.com/Agnes4Him/kubernetes-helm.git
 
-git clone https://github.com/Agnes4Him/kubernetes-helm.git $HOME/kubernetes-helm
-
-#run helm install to deploy bird-api and birdimage-api
-cd /kubernetes-helm
+cd kubernetes-helm
 
 kubectl create ns apis
 
@@ -56,8 +38,6 @@ helm install -f apis/values/birdimage-api-values.yaml birdimage-api apis
 
 helm install -f apis/values/bird-api-values.yaml bird-api apis
 
-#sleep for 5 seconds
 sleep 5
 
-#port-forward bird api service
 kubectl port-forward -n apis service/bird-api-service 4201:4201 --address 0.0.0.0 &
