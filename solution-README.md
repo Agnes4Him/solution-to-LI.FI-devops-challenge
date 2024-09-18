@@ -1,14 +1,8 @@
-helm install -f myvalues.yaml myredis ./redis
+This task was approached using the following steps:
 
-helm install --values values.yaml stable/traefik
+1. The original GitHub repository was forked into my GitHub account - public
 
-helm install -f apis/values/birdimage-api-values.yaml birdimage-api apis
+2. This was cloned locally, and the APIs were built by running the Makefiles in each API directory using the command (ran from each directory):
 
-helm install -f apis/values/bird-api-values.yaml bird-api apis
-
-helm repo add traefik https://helm.traefik.io/traefik
-
-helm repo update
-
-helm install -f apis/values/traefik-values.yaml traefik traefik/traefik
-
+'''bash'''
+make

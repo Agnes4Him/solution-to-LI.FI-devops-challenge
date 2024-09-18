@@ -1,18 +1,22 @@
 #!/bin/bash
 
 #update package
-sudo apt update -y && sudo apt upgrade -y
+sudo yum update -y && sudo yum upgrade -y
 
 #install docker
-sudo apt install -y docker.io
+sudo yum install -y docker
+#sudo amazon-linux-extras install docker
 
 #add current user to docker group
-sudo usermod -aG docker ubuntu && newgrp docker
+sudo usermod -aG docker ec2-user && newgrp docker
+
+#start docker service
+sudo systemctl start docker && sudo systemctl enable docker
 
 #install minikube
-curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-latest.x86_64.rpm
 
-sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
+sudo rpm -Uvh minikube-latest.x86_64.rpm
 
 #install Helm
 wget https://get.helm.sh/helm-v3.9.3-linux-amd64.tar.gz
@@ -26,13 +30,14 @@ rm helm-v3.9.3-linux-amd64.tar.gz
 rm -rf linux-amd64
 
 #install kubectl
-sudo snap install kubectl --classic
+curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.30.0/bin/linux/amd64/kubectl
+
+sudo chmod +x ./kubectl
+
+sudo mv ./kubectl /usr/local/bin/kubectl
 
 #install git
-sudo apt install -y git
-
-#become root user
-sudo -i
+sudo yum install -y git
 
 #start minikube
 minikube start
@@ -40,10 +45,10 @@ minikube start
 #clone k8s helm git repo
 #sudo git clone https://github.com/Agnes4Him/kubernetes-helm.git
 
-git clone https://github.com/Agnes4Him/kubernetes-helm.git
+git clone https://github.com/Agnes4Him/kubernetes-helm.git $HOME/kubernetes-helm
 
 #run helm install to deploy bird-api and birdimage-api
-cd kubernetes-helm
+cd /kubernetes-helm
 
 kubectl create ns apis
 
