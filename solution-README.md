@@ -42,7 +42,7 @@ docker push <docker-registry-username>/birdimage-api:1.0
 
 6. A helm chart was created to deploy the APIs to a Kubernetes cluster, with each API having a distinct values file.
 
-7. Infrastructures were provisioned on `AWS` using `Terraform` as `Infrastructure as Code` tool. The infrastructures include:
+7. Infrastructures were provisioned on `AWS` using `Terraform` as the `Infrastructure as Code` tool. The infrastructures include:
 
 * VPC
 
@@ -58,13 +58,15 @@ docker push <docker-registry-username>/birdimage-api:1.0
 
 * Route tables and routes
 
-* Launch template - a template that would be used to launch each instance
+* Launch template - a template that would be used to launch each instance. It uses a user_data script that would install the necessary packages, and create a Kubernetes cluster as well as deploy the APIs.
 
 * Autoscaling group - to automatically scale instance count based on metrics such as CPU and memory utilizations
 
 * Application Load balancer - to route traffic to the instances sitting behind the autoscaling group. The bird API is accessed by using the Load balancer's DNS name, which the terraform configuration will output after it's been applied.
 
 * Cloud watch alarms - which should get triggered when the threshold for each metric is reached so that autoscaling can occur
+
+* S3 Bucket - to keep access logs sent from the application loadbalancer. This can then be integrated with a observability/visualization such as Grafana to gain meaningful insights, or queried using tools such as Amazon Athena.
 
 *** An S3 bucket was created for storing teraform states remotely. Also, a DynamoDB table was created to enable locking when Terraform changes are being applied.
 
