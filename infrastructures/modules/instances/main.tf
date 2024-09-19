@@ -42,18 +42,17 @@ resource "aws_launch_template" "task_LT" {        # Launch template for instance
 resource "aws_lb_target_group"  "task_target_group" {            # Define target group for ALB to route traffic to
   name = "task-target-group"
   target_type = "instance"
-  port = 80
+  port = 4201
   protocol = "HTTP"
   vpc_id = var.vpc_id
 
-  health_check {
+  /*health_check {
     healthy_threshold = 2
     unhealthy_threshold = 3
     interval = 60
-    timeout = 120
+    timeout = 30
     path = "/"
-    port = 80
-  }
+  }*/
 }
 
 resource "aws_autoscaling_group" "task_ASG" {                      # Autoscaling group for scaling in and out the instances

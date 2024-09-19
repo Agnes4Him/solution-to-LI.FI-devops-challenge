@@ -1,4 +1,4 @@
-## A documentation of the steps taken to execute the tasks in the README.md file of this project
+## Task Solution Documentation
 
 This task was approached using the following steps:
 
@@ -90,5 +90,5 @@ The Terraform commands were ran from within `infrastructures` directory.
 
 ![Terraform](./images/terraform-config.png "Terraform configuration1")
 
-**Note** All logic and files for building, running, dockerizing the APIs is located in `apis` directory, while all resources for deployment of the APIs are located in `kubernetes` directory. The terraform scripts using in provisioning infrastructures can be found in `infrastructures` directory.
+**Please note** All logic and files for building, running, dockerizing the APIs is located in `apis` directory, while all resources for deployment of the APIs are located in `kubernetes` directory. The terraform scripts used for provisioning resources can be found in `infrastructures` directory.
 

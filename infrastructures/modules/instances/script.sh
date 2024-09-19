@@ -44,6 +44,6 @@ helm install -f apis/values/bird-api-values.yaml bird-api apis
 
 sleep 55
 
-kubectl port-forward -n apis service/bird-api-service 80:4201 --address 0.0.0.0 &
+kubectl port-forward -n apis service/bird-api-service 4201:4201 --address 0.0.0.0 &
 
 EOF
