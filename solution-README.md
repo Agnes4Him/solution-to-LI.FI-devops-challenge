@@ -1,4 +1,4 @@
-## Task Solution Documentation
+## Documentation for the bird and birdImage API task
 
 This task was approached using the following steps:
 
@@ -19,10 +19,6 @@ make
 ```bash
 ./getBirdImage
 ```
-
-![Bird API](./images/local-bird-api.png "Bird API - Local")
-
-![Bird Image API](./images/local-birdimage-api.png "Bird Image API - Local")
 
 4. Dockerfile was created for each API.
 
@@ -87,8 +83,6 @@ terraform apply -var-file=”vars/task.tfvars”
 ```
 
 The Terraform commands were ran from within `infrastructures` directory.
-
-![Terraform](./images/terraform-config.png "Terraform configuration1")
 
 **Please note** All logic and files for building, running, dockerizing the APIs is located in `apis` directory, while all resources for deployment of the APIs are located in `kubernetes` directory. The terraform scripts used for provisioning resources can be found in `infrastructures` directory.
 
