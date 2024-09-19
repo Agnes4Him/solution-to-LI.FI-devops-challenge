@@ -20,7 +20,7 @@ make
 ./getBirdImage
 ```
 
-4. Dockerfile was created for each API.
+4. Dockerfile was created for each API using multistage build configuration.
 
 5. With the Dockerfile, the docker image of each API was built and push to Docker registry using the proceeding commands:
 
@@ -83,6 +83,8 @@ terraform apply -var-file=”vars/task.tfvars”
 ```
 
 The Terraform commands were ran from within `infrastructures` directory.
+
+Terraform utilizes modules, remote state and state lock. This is to achieve modularity, reusability, collaboration among members of the same team, and the ability for only a member of the team to make changes to resources at a time to avoid conflicts in state management.
 
 **Please note** All logic and files for building, running, dockerizing the APIs is located in `apis` directory, while all resources for deployment of the APIs are located in `kubernetes` directory. The terraform scripts used for provisioning resources can be found in `infrastructures` directory.
 
