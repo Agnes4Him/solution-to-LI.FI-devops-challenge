@@ -126,8 +126,8 @@ resource "aws_security_group" "instance_sg" {
 
   ingress {
     description = "Ingress from LoadBalancer"
-    from_port   = 4201
-    to_port     = 4201
+    from_port   = 8085
+    to_port     = 8085
     protocol    = "tcp"
     security_groups = [aws_security_group.lb_sg.id]
   }

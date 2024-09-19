@@ -30,20 +30,16 @@ sudo -u ubuntu -i <<'EOF'
 
 git clone https://github.com/Agnes4Him/kubernetes-helm.git
 
-kind create cluster --wait 30s
+cd kubernetes-helm
+
+kind create cluster --config kind/kind-config.yaml --wait 30s
 
 kind get kubeconfig >> $HOME/.kube/config
-
-cd kubernetes-helm
 
 kubectl create ns apis
 
 helm install -f apis/values/birdimage-api-values.yaml birdimage-api apis
 
 helm install -f apis/values/bird-api-values.yaml bird-api apis
-
-sleep 55
-
-kubectl port-forward -n apis service/bird-api-service 4201:4201 --address 0.0.0.0 &
 
 EOF

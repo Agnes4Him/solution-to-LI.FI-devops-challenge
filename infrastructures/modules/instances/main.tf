@@ -23,10 +23,8 @@ resource "aws_launch_template" "task_LT" {        # Launch template for instance
   name_prefix     = "task"
   image_id        = data.aws_ami.task_ubuntu_ami.id
   instance_type   = var.instance_type
-  #key_name = var.key_name
   network_interfaces {
     device_index = 0
-    #associate_public_ip_address = true
     security_groups = [var.instance_sg]
   }
 
@@ -42,7 +40,7 @@ resource "aws_launch_template" "task_LT" {        # Launch template for instance
 resource "aws_lb_target_group"  "task_target_group" {            # Define target group for ALB to route traffic to
   name = "task-target-group"
   target_type = "instance"
-  port = 4201
+  port = 8085
   protocol = "HTTP"
   vpc_id = var.vpc_id
 
