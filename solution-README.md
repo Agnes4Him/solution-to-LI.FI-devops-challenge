@@ -20,6 +20,8 @@ make
 ./getBirdImage
 ```
 
+**The birdImage-api url referenced by bird-api was changed to an environment variable within `main.go` file in the `api/bird` directory. This is to make the url to be adjustable, based on the platform the APIs are deployed.**
+
 4. Dockerfile was created for each API using multistage build configuration.
 
 5. With the Dockerfile, the docker image of each API was built and push to Docker registry using the proceeding commands:
