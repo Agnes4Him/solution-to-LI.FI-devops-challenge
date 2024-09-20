@@ -6,4 +6,8 @@ infrastructures/vars
 
 infrastructures/.terraform
 
+infrastructures/terraform.tfstate
+
+infrastructures/terraform.tfstate.backup
+
 images2

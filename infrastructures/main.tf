@@ -6,12 +6,12 @@ terraform {
       version = "~> 5.0"
     }
   }
-  /*backend "s3" {
+  backend "s3" {
     bucket = "devops-interview-task-bucket"
     key    = "terraform.tfstate"
     region = "us-east-1"
     dynamodb_table = "task-tf-remote-state-lock"
-  }*/
+  }
 }
 
 provider "aws" {
