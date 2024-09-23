@@ -8,11 +8,6 @@ variable "instance_type" {
   default = ""
 }
 
-variable "key_name" {
-  type    = string
-  default = ""
-}
-
 variable "vpc_id" {
   type    = string
   default = ""
@@ -48,14 +43,21 @@ variable "public_subnetB" {
   default = ""
 }
 
-variable "bucket_prefix" {
-  type    = string
-  default = ""
-}
-
 variable "logs_bucket" {
   type    = string
   default = ""
 }
+
+variable "access_bucket_prefix" {
+  type    = string
+  default = ""
+}
+
+variable "conn_bucket_prefix" {
+  type    = string
+  default = ""
+}
+
+
 
 

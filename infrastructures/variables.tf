@@ -43,18 +43,19 @@ variable "instance_type" {
   default = "t2.medium"
 }
 
-variable "key_name" {
-  type    = string
-  default = "task_key"
-}
-
-variable "bucket_prefix" {
-  type    = string
-  default = "task/access-logs"
-}
-
 variable "logs_bucket" {
   type    = string
   default = "task-elb-access-log-bucket"
 }
+
+variable "access_bucket_prefix" {
+  type    = string
+  default = "task/access-logs"
+}
+
+variable "conn_bucket_prefix" {
+  type    = string
+  default = "task/connection-logs"
+}
+
 

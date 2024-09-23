@@ -23,7 +23,6 @@ resource "aws_launch_template" "task_LT" {        # Launch template for instance
   name_prefix     = "task"
   image_id        = data.aws_ami.task_ubuntu_ami.id
   instance_type   = var.instance_type
-  key_name = var.key_name
   network_interfaces {
     device_index = 0
     security_groups = [var.instance_sg]
@@ -36,8 +35,6 @@ resource "aws_launch_template" "task_LT" {        # Launch template for instance
     }
   }
   user_data = filebase64("${path.module}/script.sh")
-  #user_data = filebase64("/c/Users/user/Desktop/li.fi-tasks/solution-to-LI.FI-devops-challenge/infrastructures/modules/instances/script.sh")
-  #user_data  =  "${file("/c/Users/user/Desktop/li.fi-tasks/solution-to-LI.FI-devops-challenge/infrastructures/modules/instances/script.sh")}"
 }
 
 resource "aws_lb_target_group"  "task_target_group" {            # Define target group for ALB to route traffic to
@@ -82,12 +79,12 @@ resource "aws_lb"  "task_LB" {                                   # Application L
   client_keep_alive = 60
   access_logs {                                                   # S3 bucket for Load Balancer to write access logs to. Add this block if you wish to send logs to S3 for monitoring
     bucket  = var.logs_bucket
-    prefix  = var.bucket_prefix
+    prefix  = var.access_bucket_prefix
     enabled = true
   }
   connection_logs {                                                # S3 bucket for Load Balancer to write connection logs to. Add this block if you wish to send logs to S3 for monitoring
     bucket  = var.logs_bucket
-    prefix  = "task/connection-logs"
+    prefix  = var.conn_bucket_prefix
     enabled = true
   }
 }
