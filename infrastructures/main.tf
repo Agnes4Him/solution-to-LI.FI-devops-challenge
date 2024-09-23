@@ -44,7 +44,8 @@ module "instances" {
   public_subnetB  = module.network.public_subnetB
   bucket_prefix   = var.bucket_prefix
   logs_bucket     = module.s3.logs_bucket
-  key_name   = var.key_name
+  key_name        = var.key_name
+  env             = var.env
 }
 
 module "s3" {                              # This module should be added if access_logs is enabled on the application load balancer

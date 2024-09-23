@@ -23,6 +23,7 @@ resource "aws_launch_template" "task_LT" {        # Launch template for instance
   name_prefix     = "task"
   image_id        = data.aws_ami.task_ubuntu_ami.id
   instance_type   = var.instance_type
+  key_name = var.key_name
   network_interfaces {
     device_index = 0
     security_groups = [var.instance_sg]
@@ -35,6 +36,8 @@ resource "aws_launch_template" "task_LT" {        # Launch template for instance
     }
   }
   user_data = filebase64("${path.module}/script.sh")
+  #user_data = filebase64("/c/Users/user/Desktop/li.fi-tasks/solution-to-LI.FI-devops-challenge/infrastructures/modules/instances/script.sh")
+  #user_data  =  "${file("/c/Users/user/Desktop/li.fi-tasks/solution-to-LI.FI-devops-challenge/infrastructures/modules/instances/script.sh")}"
 }
 
 resource "aws_lb_target_group"  "task_target_group" {            # Define target group for ALB to route traffic to
@@ -45,21 +48,21 @@ resource "aws_lb_target_group"  "task_target_group" {            # Define target
   vpc_id = var.vpc_id
 
   health_check {
-    healthy_threshold = 2
-    unhealthy_threshold = 3
-    interval = 60
-    timeout = 30
+    healthy_threshold = 5
+    unhealthy_threshold = 2
+    interval = 30
+    timeout = 5
     path = "/"
   }
 }
 
 resource "aws_autoscaling_group" "task_ASG" {                      # Autoscaling group for scaling in and out the instances
   name                  = "task-autoscaling-group"  
-  desired_capacity      = 2
-  max_size              = 3
+  desired_capacity      = 1
+  max_size              = 2
   min_size              = 1
-  health_check_type     = "EC2"
-  termination_policies  = ["OldestInstance"]
+  #health_check_type     = "EC2"
+  #termination_policies  = ["OldestInstance"]
   vpc_zone_identifier   = [var.private_subnetA, var.private_subnetB]
   target_group_arns = [aws_lb_target_group.task_target_group.arn]
 
@@ -75,9 +78,16 @@ resource "aws_lb"  "task_LB" {                                   # Application L
   load_balancer_type = "application"
   security_groups = [var.lb_sg]
   subnets = [var.public_subnetA, var.public_subnetB]
+  idle_timeout = 10
+  client_keep_alive = 60
   access_logs {                                                   # S3 bucket for Load Balancer to write access logs to. Add this block if you wish to send logs to S3 for monitoring
     bucket  = var.logs_bucket
     prefix  = var.bucket_prefix
+    enabled = true
+  }
+  connection_logs {                                                # S3 bucket for Load Balancer to write connection logs to. Add this block if you wish to send logs to S3 for monitoring
+    bucket  = var.logs_bucket
+    prefix  = "task/connection-logs"
     enabled = true
   }
 }
