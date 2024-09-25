@@ -10,4 +10,5 @@ infrastructures/terraform.tfstate
 
 infrastructures/terraform.tfstate.backup
 
-images2
+images
+
