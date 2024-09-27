@@ -25,8 +25,18 @@ func defaultBird(err error) Bird {
 	}
 }
 
+//function added to get default value for the BIRDIMAGE_API environment variable if id does not exist
+func GetEnvDefault(key, defVal string) string {
+	api, isExist := os.LookupEnv(key)
+	if !isExist {
+	  return defVal
+	}
+	return api
+}
+
 func getBirdImage(birdName string) (string, error) {
-	api := os.Getenv("BIRDIMAGE_API")
+	api := GetEnvDefault("BIRDIMAGE_API", "http://localhost:4200")
+
 	res, err := http.Get(fmt.Sprintf("%s?birdName=%s", api, url.QueryEscape(birdName)))
     if err != nil {
         return "", err
