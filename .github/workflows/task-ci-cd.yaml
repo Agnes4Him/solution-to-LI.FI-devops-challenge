@@ -36,10 +36,30 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/birdimage-api:${{ env.IMAGE_TAG }}
 
+  update_tags:
+    name: Update the image tags of both APIs in another GitHub repository
+    runs-on: ubuntu-latest
+    needs: build
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+    - name: Clone GitHub repository, checkout to a new branch, update tags and push changes
+      run: |
+          git clone https://task:$GITHUB_TOKEN@github.com/Agnes4Him/kubernetes-helm.git
+          cd kubernetes-helm
+          git config user.name "task"
+          git config user.email "task@example.com"
+          git config --unset-all http.https://github.com/.extraheader
+          sed -i "s/tag: .*/tag: $IMAGE_TAG/g" apis/values/bird-api-values.yaml
+          sed -i "s/tag: .*/tag: $IMAGE_TAG/g" apis/values/birdimage-api-values.yaml
+          git add apis/values/bird-api-values.yaml apis/values/birdimage-api-values.yaml
+          git commit -m "updated the image tags in bird-api and birdimage-api values files"
+          git push origin main
+
   deploy:
     name: Run Terraform and deploy APIs
     runs-on: ubuntu-latest
-    needs: build
+    needs: [build, update_tags]
     steps:
     - name: Checkout
       uses: actions/checkout@v2
