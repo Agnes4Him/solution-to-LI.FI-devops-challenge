@@ -40,12 +40,15 @@ jobs:
     name: Update the image tags of both APIs in another GitHub repository
     runs-on: ubuntu-latest
     needs: build
-    env:
-      GITHUB_TOKEN: ${{ secrets.TOKEN }}
     steps:
+    #- name: Check out kubernetes-helm repository
+      #uses: actions/checkout@master
+      #with:
+       #repository: Agnes4Him/kubernetes-helm
+       #token: ${{ secrets.TOKEN }}
     - name: Clone GitHub repository, checkout to a new branch, update tags and push changes
       run: |
-          git clone https://task:$GITHUB_TOKEN@github.com/Agnes4Him/kubernetes-helm.git
+          git clone https://task:${{ secrets.TOKEN }}@github.com/Agnes4Him/kubernetes-helm.git
           cd kubernetes-helm
           git config user.name "task"
           git config user.email "task@example.com"
