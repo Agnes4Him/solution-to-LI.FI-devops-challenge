@@ -44,7 +44,7 @@ jobs:
     - name: Check out kubernetes-helm repository
       uses: actions/checkout@v3
       with:
-       repository: kubernetes-helm
+       repository: 'Agnes4Him/kubernetes-helm'
        ref: 'main'
        token: ${{ secrets.TOKEN }}
     - name: Set up Git config
