@@ -54,8 +54,8 @@ jobs:
           git config --unset-all http.https://github.com/.extraheader
     - name: Update helm values files
       run: |
-          sed -i "s/tag: .*/tag: $IMAGE_TAG/g" apis/values/bird-api-values.yaml
-          sed -i "s/tag: .*/tag: $IMAGE_TAG/g" apis/values/birdimage-api-values.yaml
+          sed -i "s/tag: .*/tag: '$IMAGE_TAG'/g" apis/values/bird-api-values.yaml
+          sed -i "s/tag: .*/tag: '$IMAGE_TAG'/g" apis/values/birdimage-api-values.yaml
     - name: Commit changes
       run: |
           git add apis/values/bird-api-values.yaml apis/values/birdimage-api-values.yaml
