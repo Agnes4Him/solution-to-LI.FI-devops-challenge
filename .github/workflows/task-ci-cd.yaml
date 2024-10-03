@@ -85,10 +85,10 @@ jobs:
       id: tf-plan
       working-directory: 'infrastructures'
       run: |
-          terraform init && terraform plan -var-file=vars/task.tfvars
+          terraform init && terraform plan
     - name: Terraform Apply
       id: tf-apply
       working-directory: 'infrastructures'
       if: ${{ steps.tf-plan.outcome }} == 'success'
       run: |
-          terraform apply -auto-approve -var-file=vars/task.tfvars
+          terraform apply -auto-approve
