@@ -49,8 +49,8 @@ jobs:
        token: ${{ secrets.TOKEN }}
     - name: Set up Git config
       run: |
-          git config user.name "Agnes4Him"
-          git config user.email "ojuhagnes@gmail.com"
+          git config user.name "task"
+          git config user.email "task@example.com"
           git config --unset-all http.https://github.com/.extraheader
     - name: Update helm values files
       run: |
@@ -62,7 +62,7 @@ jobs:
           git commit -m "updated the image tags in bird-api and birdimage-api values files"
     - name: Push changes to GitHub
       run: |
-          git push https://Agnes4Him:${{ secrets.TOKEN }}@github.com/Agnes4Him/kubernetes-helm
+          git push https://task:${{ secrets.TOKEN }}@github.com/Agnes4Him/kubernetes-helm
 
   deploy:
     name: Run Terraform and deploy APIs
