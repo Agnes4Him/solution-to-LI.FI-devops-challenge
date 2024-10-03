@@ -37,7 +37,7 @@ jobs:
         tags: ${{ vars.DOCKERHUB_USERNAME }}/birdimage-api:${{ env.IMAGE_TAG }}
 
   update_tags:
-    name: Update the image tags of both APIs in another GitHub repository
+    name: Update the image tags of APIs in a different GitHub repository
     runs-on: ubuntu-latest
     needs: build
     steps:
