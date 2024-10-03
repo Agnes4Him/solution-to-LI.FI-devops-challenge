@@ -28,13 +28,13 @@ jobs:
       with:
         context: ./apis/bird
         push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/bird-api:${{ env.IMAGE_TAG }}
+        tags: ${{ vars.DOCKERHUB_USERNAME }}/bird-api:${{ env.IMAGE_TAG }}
     - name: Build and push birdImage API
       uses: docker/build-push-action@v6
       with:
         context: ./apis/birdImage
         push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/birdimage-api:${{ env.IMAGE_TAG }}
+        tags: ${{ vars.DOCKERHUB_USERNAME }}/birdimage-api:${{ env.IMAGE_TAG }}
 
   update_tags:
     name: Update the image tags of both APIs in another GitHub repository
