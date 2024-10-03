@@ -56,10 +56,12 @@ jobs:
       run: |
           sed -i "s/tag: .*/tag: $IMAGE_TAG/g" apis/values/bird-api-values.yaml
           sed -i "s/tag: .*/tag: $IMAGE_TAG/g" apis/values/birdimage-api-values.yaml
-    - name: Push changes to repository
+    - name: Commit changes
       run: |
           git add apis/values/bird-api-values.yaml apis/values/birdimage-api-values.yaml
           git commit -m "updated the image tags in bird-api and birdimage-api values files"
+    - name: Push changes to GitHub
+      run: |
           git push origin main
 
   deploy:
